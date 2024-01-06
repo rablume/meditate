@@ -213,13 +213,17 @@ class _MyHomePageState extends State<MyHomePage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   // SizedBox(width: 20),
-                                  timerProvider.isPaused ||
-                                          timerProvider.isFinished
-                                      ? TextButton(
-                                          onPressed: timerProvider.reset,
-                                          child: const Text('Reset'),
-                                        )
-                                      : SizedBox.shrink(),
+                                  Visibility(
+                                    maintainState: true,
+                                    maintainAnimation: true,
+                                    maintainSize: true,
+                                    visible: timerProvider.isPaused ||
+                                        timerProvider.isFinished,
+                                    child: TextButton(
+                                      onPressed: timerProvider.reset,
+                                      child: const Text('Reset'),
+                                    ),
+                                  )
                                 ],
                               ),
                               const SizedBox(height: 20),
