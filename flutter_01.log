@@ -1,0 +1,98 @@
+Flutter crash report.
+Please report a bug at https://github.com/flutter/flutter/issues.
+
+## command
+
+flutter drive --driver=test_driver/integration_test.dart --target=integration_test/app_test.dart -d chrome
+
+## exception
+
+SessionNotCreatedException: SessionNotCreatedException (500): session not created: This version of ChromeDriver only supports Chrome version 114
+Current browser version is 120.0.6099.199 with binary path /usr/bin/google-chrome
+
+```
+#0      parseW3cResponse (package:webdriver/src/handler/w3c/utils.dart:81:9)
+#1      W3cSessionHandler.parseCreateResponse (package:webdriver/src/handler/w3c/session.dart:19:21)
+#2      InferSessionHandler.parseCreateResponse (package:webdriver/src/handler/infer_handler.dart:106:34)
+#3      AsyncRequestClient.send (package:webdriver/src/common/request_client.dart:96:32)
+<asynchronous suspension>
+#4      createDriver (package:webdriver/async_core.dart:62:19)
+<asynchronous suspension>
+#5      WebDriverService.startTest (package:flutter_tools/src/drive/web_driver_service.dart:154:19)
+<asynchronous suspension>
+#6      DriveCommand.runCommand (package:flutter_tools/src/commands/drive.dart:323:30)
+<asynchronous suspension>
+#7      FlutterCommand.run.<anonymous closure> (package:flutter_tools/src/runner/flutter_command.dart:1350:27)
+<asynchronous suspension>
+#8      AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:150:19)
+<asynchronous suspension>
+#9      CommandRunner.runCommand (package:args/command_runner.dart:212:13)
+<asynchronous suspension>
+#10     FlutterCommandRunner.runCommand.<anonymous closure> (package:flutter_tools/src/runner/flutter_command_runner.dart:348:9)
+<asynchronous suspension>
+#11     AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:150:19)
+<asynchronous suspension>
+#12     FlutterCommandRunner.runCommand (package:flutter_tools/src/runner/flutter_command_runner.dart:294:5)
+<asynchronous suspension>
+#13     run.<anonymous closure>.<anonymous closure> (package:flutter_tools/runner.dart:112:9)
+<asynchronous suspension>
+#14     AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:150:19)
+<asynchronous suspension>
+#15     main (package:flutter_tools/executable.dart:90:3)
+<asynchronous suspension>
+```
+
+## flutter doctor
+
+```
+[32m[✓][39m Flutter (Channel stable, 3.16.5, on Ubuntu 22.04.3 LTS 5.15.0-91-generic,
+    locale en_US.UTF-8)
+    [32m•[39m Flutter version 3.16.5 on channel stable at
+      /home/r/snap/flutter/common/flutter
+    [32m•[39m Upstream repository https://github.com/flutter/flutter.git
+    [32m•[39m Framework revision 78666c8dc5 (3 weeks ago), 2023-12-19 16:14:14 -0800
+    [32m•[39m Engine revision 3f3e560236
+    [32m•[39m Dart version 3.2.3
+    [32m•[39m DevTools version 2.28.4
+
+[32m[✓][39m Android toolchain - develop for Android devices (Android SDK version 34.0.0)
+    [32m•[39m Android SDK at /home/r/Android/Sdk
+    [32m•[39m Platform android-34, build-tools 34.0.0
+    [32m•[39m ANDROID_HOME = /home/r/Android/Sdk
+    [32m•[39m Java binary at: /usr/local/android-studio/jbr/bin/java
+    [32m•[39m Java version OpenJDK Runtime Environment (build
+      17.0.6+0-17.0.6b829.9-10027231)
+    [32m•[39m All Android licenses accepted.
+
+[32m[✓][39m Chrome - develop for the web
+    [32m•[39m Chrome at google-chrome
+
+[32m[✓][39m Linux toolchain - develop for Linux desktop
+    [32m•[39m clang version 10.0.0-4ubuntu1
+    [32m•[39m cmake version 3.16.3
+    [32m•[39m ninja version 1.10.0
+    [32m•[39m pkg-config version 0.29.1
+
+[32m[✓][39m Android Studio (version 2022.3)
+    [32m•[39m Android Studio at /usr/local/android-studio
+    [32m•[39m Flutter plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/9212-flutter
+    [32m•[39m Dart plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/6351-dart
+    [32m•[39m Java version OpenJDK Runtime Environment (build
+      17.0.6+0-17.0.6b829.9-10027231)
+
+[32m[✓][39m VS Code (version 1.85.1)
+    [32m•[39m VS Code at /usr/share/code
+    [32m•[39m Flutter extension version 3.80.0
+
+[32m[✓][39m Connected device (2 available)
+    [32m•[39m Linux (desktop) • linux  • linux-x64      • Ubuntu 22.04.3 LTS
+      5.15.0-91-generic
+    [32m•[39m Chrome (web)    • chrome • web-javascript • Google Chrome 120.0.6099.199
+
+[32m[✓][39m Network resources
+    [32m•[39m All expected network resources are available.
+
+[32m•[39m No issues found!
+```

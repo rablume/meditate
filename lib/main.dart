@@ -56,7 +56,7 @@ class TimerProvider with ChangeNotifier {
   }
 
   void resumeTimer() {
-    _timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
+    _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
       _seconds = STARTING_SECONDS - _stopwatch.elapsed.inSeconds;
       if (seconds <= 0) {
         _isFinished = true;
@@ -202,7 +202,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             children: [
                               Text(
                                 'Elapsed Time: ${timerProvider.elapsed.inSeconds} seconds',
-                                style: TextStyle(fontSize: 18),
+                                style: const TextStyle(fontSize: 18),
                               ),
                               Text(
                                 formatDuration(timerProvider.seconds),
