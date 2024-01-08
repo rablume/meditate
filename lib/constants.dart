@@ -1,0 +1,1 @@
+const int DEFAULT_TIMER_SECONDS = 5;

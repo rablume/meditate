@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:clock/clock.dart';
 
+import 'constants.dart' as Constants;
+import 'utils.dart' as Utils;
+
 void main() {
   runApp(
     ChangeNotifierProvider(
@@ -12,7 +15,7 @@ void main() {
   );
 }
 
-int STARTING_SECONDS = 5;
+int STARTING_SECONDS = Constants.DEFAULT_TIMER_SECONDS;
 
 class TimerProvider with ChangeNotifier {
   final _stopwatch = clock.stopwatch();
@@ -132,14 +135,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String formatDuration(int seconds) {
-    Duration duration = Duration(seconds: seconds);
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-    return '$twoDigitMinutes:$twoDigitSeconds';
-  }
-
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
@@ -208,7 +203,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 style: const TextStyle(fontSize: 18),
                               ),
                               Text(
-                                formatDuration(timerProvider.seconds),
+                                Utils.formatDuration(timerProvider.seconds),
                                 style: const TextStyle(fontSize: 30),
                               ),
                               const SizedBox(height: 20),
