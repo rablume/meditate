@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:clock/clock.dart';
 
 void main() {
   runApp(
@@ -14,20 +15,20 @@ void main() {
 int STARTING_SECONDS = 5;
 
 class TimerProvider with ChangeNotifier {
-  final _stopwatch = Stopwatch();
+  final _stopwatch = clock.stopwatch();
   int _seconds = STARTING_SECONDS;
   bool _isPaused = true;
   bool _isFinished = false;
+  bool _hasStarted = false;
   bool _elementsHidden = false;
-  late Timer _timer;
+  Timer? _timer;
 
   int get seconds => _seconds;
   bool get isPaused => _isPaused;
   bool get isFinished => _isFinished;
   bool get elementsHidden => _elementsHidden;
   Duration get elapsed => _stopwatch.elapsed;
-
-  TimerProvider();
+  bool get hasStarted => _hasStarted;
 
   void hideElements() {
     _elementsHidden = true;
@@ -44,18 +45,19 @@ class TimerProvider with ChangeNotifier {
     _isFinished = false;
     _seconds = STARTING_SECONDS;
     _stopwatch.reset();
-    _timer.cancel();
+    _timer?.cancel();
     notifyListeners();
   }
 
   void pauseTimer() {
-    _timer.cancel();
+    _timer?.cancel();
     _isPaused = true;
     _stopwatch.stop();
     notifyListeners();
   }
 
   void resumeTimer() {
+    _hasStarted = true;
     _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
       _seconds = STARTING_SECONDS - _stopwatch.elapsed.inSeconds;
       if (seconds <= 0) {
@@ -72,7 +74,7 @@ class TimerProvider with ChangeNotifier {
   @override
   void dispose() {
     _stopwatch.stop();
-    _timer.cancel();
+    _timer?.cancel();
     super.dispose();
   }
 }
@@ -160,6 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Consumer<TimerProvider>(builder: (context, timerProvider, child) {
           return GestureDetector(
+              key: Key('AppBody'),
               onTap: () {
                 if (!timerProvider.isPaused && !timerProvider._isFinished) {
                   if (timerProvider._elementsHidden) {
@@ -217,7 +220,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                     maintainState: true,
                                     maintainAnimation: true,
                                     maintainSize: true,
-                                    visible: timerProvider.isPaused ||
+                                    visible: timerProvider.hasStarted &&
+                                            timerProvider.isPaused ||
                                         timerProvider.isFinished,
                                     child: TextButton(
                                       onPressed: timerProvider.reset,
@@ -227,14 +231,15 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ],
                               ),
                               const SizedBox(height: 20),
-                              TextButton(
-                                onPressed: timerProvider.isPaused
-                                    ? timerProvider.resumeTimer
-                                    : timerProvider.pauseTimer,
-                                child: timerProvider._isPaused
-                                    ? const Icon(Icons.play_arrow)
-                                    : const Icon(Icons.pause),
-                              )
+                              timerProvider.isPaused
+                                  ? TextButton(
+                                      onPressed: timerProvider.resumeTimer,
+                                      child: Icon(Icons.play_arrow),
+                                    )
+                                  : TextButton(
+                                      onPressed: timerProvider.pauseTimer,
+                                      child: Icon(Icons.pause),
+                                    )
                             ],
                           )
                         ],
