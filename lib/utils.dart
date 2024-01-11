@@ -3,5 +3,6 @@ String formatDuration(int seconds) {
   String twoDigits(int n) => n.toString().padLeft(2, '0');
   String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
   String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-  return '$twoDigitMinutes:$twoDigitSeconds';
+  String twoDigitHours = twoDigits(duration.inHours);
+  return '$twoDigitHours:$twoDigitMinutes:$twoDigitSeconds';
 }

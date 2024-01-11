@@ -20,10 +20,10 @@ void main() {
         ),
       );
 
-      // Verify the counter starts at 0.
+      // Verify the counter starts at default timer seconds.
       expect(find.text(Utils.formatDuration(Constants.DEFAULT_TIMER_SECONDS)),
           findsOneWidget);
-      expect(find.text('Reset').hitTestable(), findsNothing);
+      expect(find.text(Constants.RESET_TEXT).hitTestable(), findsNothing);
       expect(find.byIcon(Icons.more_horiz), findsOneWidget);
       expect(find.byIcon(Icons.play_arrow), findsOneWidget);
 
@@ -39,7 +39,7 @@ void main() {
       expect(
           find.text(Utils.formatDuration(Constants.DEFAULT_TIMER_SECONDS - 1)),
           findsOneWidget);
-      expect(find.text('Reset'), findsOneWidget);
+      expect(find.text(Constants.RESET_TEXT), findsOneWidget);
       expect(find.byIcon(Icons.more_horiz).hitTestable(), findsNothing);
       expect(find.byIcon(Icons.pause), findsOneWidget);
 
@@ -53,7 +53,7 @@ void main() {
               .text(Utils.formatDuration(Constants.DEFAULT_TIMER_SECONDS - 1))
               .hitTestable(),
           findsNothing);
-      expect(find.text("Reset").hitTestable(), findsNothing);
+      expect(find.text(Constants.RESET_TEXT).hitTestable(), findsNothing);
       expect(find.byIcon(Icons.more_horiz).hitTestable(), findsNothing);
       expect(find.byIcon(Icons.pause).hitTestable(), findsNothing);
 
@@ -64,7 +64,7 @@ void main() {
       expect(
           find.text(Utils.formatDuration(Constants.DEFAULT_TIMER_SECONDS - 1)),
           findsOneWidget);
-      expect(find.text('Reset'), findsOneWidget);
+      expect(find.text(Constants.RESET_TEXT), findsOneWidget);
       expect(find.byIcon(Icons.more_horiz).hitTestable(), findsNothing);
       expect(find.byIcon(Icons.pause), findsOneWidget);
 
@@ -72,14 +72,14 @@ void main() {
           Duration(seconds: Constants.DEFAULT_TIMER_SECONDS - 1));
 
       expect(find.text('00:00'), findsOneWidget);
-      expect(find.text('Reset'), findsOneWidget);
+      expect(find.text(Constants.RESET_TEXT), findsOneWidget);
       expect(find.byIcon(Icons.more_horiz), findsOneWidget);
       expect(find.byIcon(Icons.pause), findsOneWidget);
 
       await tester.pumpAndSettle(Duration(seconds: 60));
 
       expect(find.text('-1:00'), findsOneWidget);
-      expect(find.text('Reset'), findsOneWidget);
+      expect(find.text(Constants.RESET_TEXT), findsOneWidget);
       expect(find.byIcon(Icons.more_horiz), findsOneWidget);
       expect(find.byIcon(Icons.pause), findsOneWidget);
     });

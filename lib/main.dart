@@ -198,10 +198,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         children: <Widget>[
                           Column(
                             children: [
-                              Text(
-                                'Elapsed Time: ${timerProvider.elapsed.inSeconds} seconds',
-                                style: const TextStyle(fontSize: 18),
-                              ),
+                              // Text(
+                              //   'Elapsed Time: ${timerProvider.elapsed.inSeconds} seconds',
+                              //   style: const TextStyle(fontSize: 18),
+                              // ),
                               Text(
                                 Utils.formatDuration(timerProvider.seconds),
                                 style: const TextStyle(fontSize: 30),
@@ -220,7 +220,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         timerProvider.isFinished,
                                     child: TextButton(
                                       onPressed: timerProvider.reset,
-                                      child: const Text('Reset'),
+                                      child: const Text(Constants.RESET_TEXT),
                                     ),
                                   )
                                 ],
@@ -250,7 +250,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   foregroundColor: colorScheme.primary,
                   backgroundColor: colorScheme.surface,
                   onPressed: () => {},
-                  tooltip: 'settings',
                   elevation: 0.0, // No shadow
                   child: const Icon(Icons.more_horiz),
                 )
