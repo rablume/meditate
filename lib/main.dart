@@ -203,11 +203,30 @@ class _MyHomePageState extends State<MyHomePage> {
                               //   'Elapsed Time: ${timerProvider.elapsed.inSeconds} seconds',
                               //   style: const TextStyle(fontSize: 18),
                               // ),
-                              Text(
-                                Utils.formatDuration(
-                                    Duration(seconds: timerProvider.seconds)),
-                                style: const TextStyle(fontSize: 30),
-                              ),
+                              GestureDetector(
+                                  onTap: () {
+                                    // Show modalBottomSheet when the elapsed time is clicked
+                                    showModalBottomSheet(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Container(
+                                          height: 200,
+                                          color: Colors.white,
+                                          child: Center(
+                                            child: Text(
+                                              'Modal Bottom Sheet Content',
+                                              style: TextStyle(fontSize: 20),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Text(
+                                    Utils.formatDuration(Duration(
+                                        seconds: timerProvider.seconds)),
+                                    style: const TextStyle(fontSize: 30),
+                                  )),
                               const SizedBox(height: 20),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
