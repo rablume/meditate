@@ -46,6 +46,7 @@ class TimerProvider with ChangeNotifier {
   void reset() {
     _isPaused = true;
     _isFinished = false;
+    _hasStarted = false;
     _seconds = STARTING_SECONDS;
     _stopwatch.reset();
     _timer?.cancel();
@@ -157,7 +158,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Consumer<TimerProvider>(builder: (context, timerProvider, child) {
           return GestureDetector(
-              key: Key('AppBody'),
+              key: const Key('AppBody'),
               onTap: () {
                 if (!timerProvider.isPaused && !timerProvider._isFinished) {
                   if (timerProvider._elementsHidden) {
@@ -203,7 +204,8 @@ class _MyHomePageState extends State<MyHomePage> {
                               //   style: const TextStyle(fontSize: 18),
                               // ),
                               Text(
-                                Utils.formatDuration(timerProvider.seconds),
+                                Utils.formatDuration(
+                                    Duration(seconds: timerProvider.seconds)),
                                 style: const TextStyle(fontSize: 30),
                               ),
                               const SizedBox(height: 20),
@@ -229,11 +231,11 @@ class _MyHomePageState extends State<MyHomePage> {
                               timerProvider.isPaused
                                   ? TextButton(
                                       onPressed: timerProvider.resumeTimer,
-                                      child: Icon(Icons.play_arrow),
+                                      child: const Icon(Icons.play_arrow),
                                     )
                                   : TextButton(
                                       onPressed: timerProvider.pauseTimer,
-                                      child: Icon(Icons.pause),
+                                      child: const Icon(Icons.pause),
                                     )
                             ],
                           )
