@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:meditate/widgets/value_scroll.dart';
 import 'package:provider/provider.dart';
 import 'package:clock/clock.dart';
 
@@ -18,20 +20,25 @@ void main() {
 int STARTING_SECONDS = Constants.DEFAULT_TIMER_SECONDS;
 
 class TimerProvider with ChangeNotifier {
+  Duration _startingTime = Duration(seconds: STARTING_SECONDS);
   final _stopwatch = clock.stopwatch();
-  int _seconds = STARTING_SECONDS;
   bool _isPaused = true;
   bool _isFinished = false;
   bool _hasStarted = false;
   bool _elementsHidden = false;
   Timer? _timer;
 
-  int get seconds => _seconds;
   bool get isPaused => _isPaused;
   bool get isFinished => _isFinished;
   bool get elementsHidden => _elementsHidden;
   Duration get elapsed => _stopwatch.elapsed;
   bool get hasStarted => _hasStarted;
+  Duration get startingTime => _startingTime;
+
+  void setStartingTime(Duration startingTime) {
+    _startingTime = startingTime;
+    notifyListeners();
+  }
 
   void hideElements() {
     _elementsHidden = true;
@@ -47,7 +54,6 @@ class TimerProvider with ChangeNotifier {
     _isPaused = true;
     _isFinished = false;
     _hasStarted = false;
-    _seconds = STARTING_SECONDS;
     _stopwatch.reset();
     _timer?.cancel();
     notifyListeners();
@@ -63,8 +69,7 @@ class TimerProvider with ChangeNotifier {
   void resumeTimer() {
     _hasStarted = true;
     _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
-      _seconds = STARTING_SECONDS - _stopwatch.elapsed.inSeconds;
-      if (seconds <= 0) {
+      if ((_startingTime.inSeconds - _stopwatch.elapsed.inSeconds) <= 0) {
         _isFinished = true;
         _elementsHidden = false;
       }
@@ -90,30 +95,37 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Meditate',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
-        useMaterial3: true,
-      ),
-      darkTheme: ThemeData.dark(), // standard dark theme
-      themeMode: ThemeMode.system, // device controls theme
-      home: const MyHomePage(title: 'Meditate'),
-    );
+        title: 'Meditate',
+        theme: ThemeData(
+          // This is the theme of your application.
+          //
+          // TRY THIS: Try running your application with "flutter run". You'll see
+          // the application has a purple toolbar. Then, without quitting the app,
+          // try changing the seedColor in the colorScheme below to Colors.green
+          // and then invoke "hot reload" (save your changes or press the "hot
+          // reload" button in a Flutter-supported IDE, or press "r" if you used
+          // the command line to start the app).
+          //
+          // Notice that the counter didn't reset back to zero; the application
+          // state is not lost during the reload. To reset the state, use hot
+          // restart instead.
+          //
+          // This works for code too, not just values: Most code changes can be
+          // tested with just a hot reload.
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
+          useMaterial3: true,
+        ),
+        darkTheme: ThemeData.dark(), // standard dark theme
+        themeMode: ThemeMode.system, // device controls theme
+        home: const MyHomePage(title: 'Meditate'),
+        scrollBehavior: MaterialScrollBehavior().copyWith(
+          dragDevices: {
+            PointerDeviceKind.mouse,
+            PointerDeviceKind.touch,
+            PointerDeviceKind.stylus,
+            PointerDeviceKind.unknown
+          },
+        ));
   }
 }
 
@@ -199,10 +211,21 @@ class _MyHomePageState extends State<MyHomePage> {
                         children: <Widget>[
                           Column(
                             children: [
-                              // Text(
-                              //   'Elapsed Time: ${timerProvider.elapsed.inSeconds} seconds',
-                              //   style: const TextStyle(fontSize: 18),
-                              // ),
+                              Container(
+                                  height: 200,
+                                  width: 200,
+                                  child: ValueScroll(
+                                      length: 11,
+                                      setValue: (value) =>
+                                          timerProvider.setStartingTime(
+                                              Duration(seconds: value)),
+                                      value: timerProvider
+                                          .startingTime.inSeconds
+                                          .remainder(60))),
+                              Text(
+                                'Elapsed Time: ${timerProvider.elapsed.inSeconds} seconds',
+                                style: const TextStyle(fontSize: 18),
+                              ),
                               GestureDetector(
                                   onTap: () {
                                     // Show modalBottomSheet when the elapsed time is clicked
@@ -224,7 +247,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                   },
                                   child: Text(
                                     Utils.formatDuration(Duration(
-                                        seconds: timerProvider.seconds)),
+                                        seconds: timerProvider
+                                                .startingTime.inSeconds -
+                                            timerProvider
+                                                ._stopwatch.elapsed.inSeconds)),
                                     style: const TextStyle(fontSize: 30),
                                   )),
                               const SizedBox(height: 20),
