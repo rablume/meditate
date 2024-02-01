@@ -32,8 +32,7 @@ class ValueScroll extends StatelessWidget {
       // clipToSize: true,
 
       clipBehavior: Clip.antiAlias,
-      children: List.generate(length,
-          (index) => ElevatedButton(onPressed: null, child: Text("${index}"))),
+      children: List.generate(length, (index) => Text(index.toString())),
       onSelectedItemChanged: (index) {
         setValue(index);
       },
