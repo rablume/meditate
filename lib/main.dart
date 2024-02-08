@@ -20,7 +20,10 @@ void main() {
 int STARTING_SECONDS = Constants.DEFAULT_TIMER_SECONDS;
 
 class TimerProvider with ChangeNotifier {
-  Duration _startingTime = Duration(seconds: STARTING_SECONDS);
+  Duration _startingTime = Duration(
+      seconds: Constants.DEFAULT_TIMER_SECONDS,
+      minutes: Constants.DEFAULT_TIMER_MINUTES,
+      hours: Constants.DEFAULT_TIMER_HOURS);
   final _stopwatch = clock.stopwatch();
   bool _isPaused = true;
   bool _isFinished = false;
@@ -211,48 +214,69 @@ class _MyHomePageState extends State<MyHomePage> {
                         children: <Widget>[
                           Column(
                             children: [
-                              Container(
-                                  height: 200,
-                                  width: 200,
-                                  child: ValueScroll(
-                                      length: 11,
-                                      setValue: (value) =>
-                                          timerProvider.setStartingTime(
-                                              Duration(seconds: value)),
-                                      value: timerProvider
-                                          .startingTime.inSeconds
-                                          .remainder(60))),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                        height: 200,
+                                        width: 50,
+                                        child: ValueScroll(
+                                            length: 100,
+                                            setValue: (value) => timerProvider
+                                                .setStartingTime(Duration(
+                                                    hours: value,
+                                                    minutes: timerProvider
+                                                        .startingTime.inMinutes
+                                                        .remainder(60),
+                                                    seconds: timerProvider
+                                                        .startingTime.inSeconds
+                                                        .remainder(60))),
+                                            value: timerProvider
+                                                .startingTime.inHours)),
+                                    Container(
+                                        height: 200,
+                                        width: 50,
+                                        child: ValueScroll(
+                                            length: 60,
+                                            setValue: (value) => timerProvider
+                                                .setStartingTime(Duration(
+                                                    hours: timerProvider
+                                                        .startingTime.inHours,
+                                                    minutes: value,
+                                                    seconds: timerProvider
+                                                        .startingTime.inSeconds
+                                                        .remainder(60))),
+                                            value: timerProvider
+                                                .startingTime.inMinutes
+                                                .remainder(60))),
+                                    Container(
+                                        height: 200,
+                                        width: 50,
+                                        child: ValueScroll(
+                                            length: 60,
+                                            setValue: (value) => timerProvider
+                                                .setStartingTime(Duration(
+                                                    hours: timerProvider
+                                                        .startingTime.inHours,
+                                                    minutes: timerProvider
+                                                        .startingTime.inMinutes
+                                                        .remainder(60),
+                                                    seconds: value)),
+                                            value: timerProvider
+                                                .startingTime.inSeconds
+                                                .remainder(60))),
+                                  ]),
                               Text(
                                 'Elapsed Time: ${timerProvider.elapsed.inSeconds} seconds',
                                 style: const TextStyle(fontSize: 18),
                               ),
-                              GestureDetector(
-                                  onTap: () {
-                                    // Show modalBottomSheet when the elapsed time is clicked
-                                    showModalBottomSheet(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return Container(
-                                          height: 200,
-                                          color: Colors.white,
-                                          child: Center(
-                                            child: Text(
-                                              'Modal Bottom Sheet Content',
-                                              style: TextStyle(fontSize: 20),
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Text(
-                                    Utils.formatDuration(Duration(
-                                        seconds: timerProvider
-                                                .startingTime.inSeconds -
-                                            timerProvider
-                                                ._stopwatch.elapsed.inSeconds)),
-                                    style: const TextStyle(fontSize: 30),
-                                  )),
+                              Text(
+                                Utils.formatDuration(Duration(
+                                    seconds:
+                                        timerProvider.startingTime.inSeconds -
+                                            timerProvider.elapsed.inSeconds)),
+                                style: const TextStyle(fontSize: 30),
+                              ),
                               const SizedBox(height: 20),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,

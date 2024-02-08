@@ -3,23 +3,29 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:meditate/widgets/value_scroll.dart';
 
 void main() {
-  // Define a test. The TestWidgets function also provides a WidgetTester
-  // to work with. The WidgetTester allows building and interacting
-  // with widgets in the test environment.
-  testWidgets('MyWidget has a title and message', (tester) async {
-    // Create the widget by telling the tester to build it.
-    const length = 5;
+  testWidgets('ValueScroll displays value on screen', (tester) async {
+    // Arrange
+    const length = 100;
     var value = 1;
     final setValue = (val) => value = val;
+    final valueScrollWidget =
+        ValueScroll(length: length, value: value, setValue: setValue);
 
-    await tester.pumpWidget(MaterialApp(
-        home: ValueScroll(length: length, value: value, setValue: setValue)));
+    await tester.pumpWidget(MaterialApp(home: valueScrollWidget));
 
-    // Create the Finders.
+    // Act
     final valueFinder = find.text(value.toString());
 
-    // Use the `findsOneWidget` matcher provided by flutter_test to
-    // verify that the Text widgets appear exactly once in the widget tree.
+    // Assert
     expect(valueFinder, findsOneWidget);
+
+    // Act
+    final itemFinder = find.text((length - 1).toString());
+    final scrollFinder = find.byWidget(valueScrollWidget);
+    await tester.dragUntilVisible(itemFinder, scrollFinder, Offset(0, -500));
+
+    // Assert
+    // Verify that the item contains the correct text.
+    expect(itemFinder, findsOneWidget);
   });
 }

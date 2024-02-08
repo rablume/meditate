@@ -22,8 +22,10 @@ void main() {
 
       // Verify the counter starts at default timer seconds.
       expect(
-          find.text(Utils.formatDuration(
-              const Duration(seconds: Constants.DEFAULT_TIMER_SECONDS))),
+          find.text(Utils.formatDuration(const Duration(
+              hours: Constants.DEFAULT_TIMER_HOURS,
+              minutes: Constants.DEFAULT_TIMER_MINUTES,
+              seconds: Constants.DEFAULT_TIMER_SECONDS))),
           findsOneWidget);
       expect(find.text(Constants.RESET_TEXT).hitTestable(), findsNothing);
       expect(find.byIcon(Icons.play_arrow), findsOneWidget);
@@ -39,22 +41,28 @@ void main() {
       await tester.pumpAndSettle(const Duration(seconds: 1, milliseconds: 200));
 
       expect(
-          find.text(Utils.formatDuration(
-              const Duration(seconds: Constants.DEFAULT_TIMER_SECONDS - 1))),
+          find.text(Utils.formatDuration(const Duration(
+              hours: Constants.DEFAULT_TIMER_HOURS,
+              minutes: Constants.DEFAULT_TIMER_MINUTES,
+              seconds: Constants.DEFAULT_TIMER_SECONDS - 1))),
           findsOneWidget);
       expect(find.text(Constants.RESET_TEXT), findsOneWidget);
       expect(find.byIcon(Icons.pause), findsOneWidget);
       expect(find.byIcon(Icons.more_horiz).hitTestable(), findsNothing);
 
       // Emulate a tap on the page
-      await tester.tap(find.text(Utils.formatDuration(
-          const Duration(seconds: Constants.DEFAULT_TIMER_SECONDS - 1))));
+      await tester.tap(find.text(Utils.formatDuration(const Duration(
+          hours: Constants.DEFAULT_TIMER_HOURS,
+          minutes: Constants.DEFAULT_TIMER_MINUTES,
+          seconds: Constants.DEFAULT_TIMER_SECONDS - 1))));
       await tester.pumpAndSettle();
 
       expect(
           find
-              .text(Utils.formatDuration(
-                  const Duration(seconds: Constants.DEFAULT_TIMER_SECONDS - 1)))
+              .text(Utils.formatDuration(const Duration(
+                  hours: Constants.DEFAULT_TIMER_HOURS,
+                  minutes: Constants.DEFAULT_TIMER_MINUTES,
+                  seconds: Constants.DEFAULT_TIMER_SECONDS - 1)))
               .hitTestable(),
           findsNothing);
       expect(find.text(Constants.RESET_TEXT).hitTestable(), findsNothing);
@@ -66,15 +74,19 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(
-          find.text(Utils.formatDuration(
-              const Duration(seconds: Constants.DEFAULT_TIMER_SECONDS - 1))),
+          find.text(Utils.formatDuration(const Duration(
+              hours: Constants.DEFAULT_TIMER_HOURS,
+              minutes: Constants.DEFAULT_TIMER_MINUTES,
+              seconds: Constants.DEFAULT_TIMER_SECONDS - 1))),
           findsOneWidget);
       expect(find.text(Constants.RESET_TEXT), findsOneWidget);
       expect(find.byIcon(Icons.pause), findsOneWidget);
       expect(find.byIcon(Icons.more_horiz).hitTestable(), findsNothing);
 
-      await tester.pumpAndSettle(
-          const Duration(seconds: Constants.DEFAULT_TIMER_SECONDS - 1));
+      await tester.pumpAndSettle(const Duration(
+          hours: Constants.DEFAULT_TIMER_HOURS,
+          minutes: Constants.DEFAULT_TIMER_MINUTES,
+          seconds: Constants.DEFAULT_TIMER_SECONDS - 1));
 
       expect(find.text(Utils.formatDuration(Duration.zero)), findsOneWidget);
       expect(find.text(Constants.RESET_TEXT), findsOneWidget);
@@ -84,7 +96,9 @@ void main() {
       const waitSeconds = 60;
       await tester.pumpAndSettle(const Duration(seconds: waitSeconds));
 
-      expect(find.text(Utils.formatDuration(const Duration(seconds: -waitSeconds))),
+      expect(
+          find.text(
+              Utils.formatDuration(const Duration(seconds: -waitSeconds))),
           findsOneWidget);
       expect(find.text(Constants.RESET_TEXT), findsOneWidget);
       expect(find.byIcon(Icons.pause), findsOneWidget);
@@ -94,7 +108,9 @@ void main() {
       await tester.tap(find.byIcon(Icons.pause));
       await tester.pumpAndSettle();
 
-      expect(find.text(Utils.formatDuration(const Duration(seconds: -waitSeconds))),
+      expect(
+          find.text(
+              Utils.formatDuration(const Duration(seconds: -waitSeconds))),
           findsOneWidget);
       expect(find.text(Constants.RESET_TEXT), findsOneWidget);
       expect(find.byIcon(Icons.play_arrow), findsOneWidget);
@@ -106,8 +122,10 @@ void main() {
 
       // Verify the counter starts at default timer seconds.
       expect(
-          find.text(Utils.formatDuration(
-              const Duration(seconds: Constants.DEFAULT_TIMER_SECONDS))),
+          find.text(Utils.formatDuration(const Duration(
+              hours: Constants.DEFAULT_TIMER_HOURS,
+              minutes: Constants.DEFAULT_TIMER_MINUTES,
+              seconds: Constants.DEFAULT_TIMER_SECONDS))),
           findsOneWidget);
       expect(find.text(Constants.RESET_TEXT).hitTestable(), findsNothing);
       expect(find.byIcon(Icons.play_arrow), findsOneWidget);
