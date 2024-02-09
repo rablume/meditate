@@ -59,6 +59,7 @@ class TimerProvider with ChangeNotifier {
     _isPaused = true;
     _isFinished = false;
     _hasStarted = false;
+    _stopwatch.stop();
     _stopwatch.reset();
     _timer?.cancel();
     player.stop();
