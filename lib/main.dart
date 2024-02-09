@@ -5,6 +5,7 @@ import 'package:meditate/widgets/value_scroll.dart';
 import 'package:provider/provider.dart';
 import 'package:clock/clock.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:wakelock/wakelock.dart';
 
 import 'constants.dart' as Constants;
 import 'utils.dart' as Utils;
@@ -56,6 +57,7 @@ class TimerProvider with ChangeNotifier {
   }
 
   void reset() {
+    Wakelock.disable();
     _isPaused = true;
     _isFinished = false;
     _hasStarted = false;
@@ -67,6 +69,7 @@ class TimerProvider with ChangeNotifier {
   }
 
   void pauseTimer() {
+    Wakelock.disable();
     _timer?.cancel();
     _isPaused = true;
     _stopwatch.stop();
@@ -75,6 +78,7 @@ class TimerProvider with ChangeNotifier {
   }
 
   void resumeTimer() {
+    Wakelock.enable();
     _hasStarted = true;
     if (player.state == PlayerState.paused) {
       player.resume();
