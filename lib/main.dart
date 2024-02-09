@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:meditate/widgets/value_scroll.dart';
 import 'package:provider/provider.dart';
 import 'package:clock/clock.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 import 'constants.dart' as Constants;
 import 'utils.dart' as Utils;
@@ -30,6 +31,7 @@ class TimerProvider with ChangeNotifier {
   bool _hasStarted = false;
   bool _elementsHidden = false;
   Timer? _timer;
+  final player = AudioPlayer();
 
   bool get isPaused => _isPaused;
   bool get isFinished => _isFinished;
@@ -59,6 +61,7 @@ class TimerProvider with ChangeNotifier {
     _hasStarted = false;
     _stopwatch.reset();
     _timer?.cancel();
+    player.stop();
     notifyListeners();
   }
 
@@ -66,15 +69,21 @@ class TimerProvider with ChangeNotifier {
     _timer?.cancel();
     _isPaused = true;
     _stopwatch.stop();
+    player.pause();
     notifyListeners();
   }
 
   void resumeTimer() {
     _hasStarted = true;
-    _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
-      if ((_startingTime.inSeconds - _stopwatch.elapsed.inSeconds) <= 0) {
+    if (player.state == PlayerState.paused) {
+      player.resume();
+    }
+    _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) async {
+      if ((_startingTime.inSeconds - _stopwatch.elapsed.inSeconds) <= 0 &&
+          !_isFinished) {
         _isFinished = true;
         _elementsHidden = false;
+        await player.play(AssetSource('windchime1-7065.mp3'));
       }
       notifyListeners();
     });
