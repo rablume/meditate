@@ -57,7 +57,7 @@ class TimerProvider with ChangeNotifier {
   }
 
   void reset() {
-    // Wakelock.disable();
+    WakelockPlus.disable();
     _isPaused = true;
     _isFinished = false;
     _hasStarted = false;
@@ -69,7 +69,7 @@ class TimerProvider with ChangeNotifier {
   }
 
   void pauseTimer() {
-    // Wakelock.disable();
+    WakelockPlus.disable();
     _timer?.cancel();
     _isPaused = true;
     _stopwatch.stop();
@@ -111,7 +111,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    WakelockPlus.enable();
     return MaterialApp(
         title: 'Meditate',
         theme: ThemeData(
