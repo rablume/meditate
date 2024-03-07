@@ -33,6 +33,12 @@ class TimerProvider with ChangeNotifier {
   bool _elementsHidden = false;
   Timer? _timer;
   final player = AudioPlayer();
+  // player.onPlayerStateChanged.listen((event) {
+  //   setState(() {
+  //     isPlaying = event == PlayerState.PLAYING;
+  //     audioPlayer.setVolume(1.0);
+  //   });
+  // });
 
   bool get isPaused => _isPaused;
   bool get isFinished => _isFinished;
@@ -40,6 +46,20 @@ class TimerProvider with ChangeNotifier {
   Duration get elapsed => _stopwatch.elapsed;
   bool get hasStarted => _hasStarted;
   Duration get startingTime => _startingTime;
+
+  TimerProvider() {
+    player.setSourceAsset('windchime1-7065.mp3');
+    player.setVolume(0);
+    player.onPlayerStateChanged.listen((PlayerState state) {
+      if (state == PlayerState.playing && !_hasStarted) {
+        _hasStarted = true;
+        player.pause();
+        player.seek(Duration(seconds: 0));
+      }
+    });
+    // player.play(AssetSource('windchime1-7065.mp3'));
+    // player.stop();
+  }
 
   void setStartingTime(Duration startingTime) {
     _startingTime = startingTime;
@@ -65,6 +85,7 @@ class TimerProvider with ChangeNotifier {
     _stopwatch.reset();
     _timer?.cancel();
     player.stop();
+    player.setVolume(0);
     notifyListeners();
   }
 
@@ -73,22 +94,37 @@ class TimerProvider with ChangeNotifier {
     _timer?.cancel();
     _isPaused = true;
     _stopwatch.stop();
-    player.pause();
+    if (player.state == PlayerState.playing) {
+      player.pause();
+    }
     notifyListeners();
   }
 
-  void resumeTimer() {
+  void resumeTimer() async {
     WakelockPlus.enable();
-    _hasStarted = true;
-    if (player.state == PlayerState.paused) {
-      player.resume();
-    }
+    player.resume();
+
+    // await player.resume();
+
+    // if (!_hasStarted) {
+    //   _hasStarted = true;
+    //   // await player.resume();
+    //   // await player.stop();
+    //   // await player.play(AssetSource('windchime1-7065.mp3'));
+    // }
+    // if (player.state == PlayerState.paused) {
+    //   await player.stop();
+    //   await player.resume();
+    // }
     _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) async {
       if ((_startingTime.inSeconds - _stopwatch.elapsed.inSeconds) <= 0 &&
           !_isFinished) {
         _isFinished = true;
         _elementsHidden = false;
-        await player.play(AssetSource('windchime1-7065.mp3'));
+        // await player.stop();
+        await player.setVolume(1);
+        await player.resume();
+        // await player.play(AssetSource('windchime1-7065.mp3'));
       }
       notifyListeners();
     });
