@@ -76,7 +76,7 @@ class TimerProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void reset() {
+  void reset() async {
     WakelockPlus.disable();
     _isPaused = true;
     _isFinished = false;
@@ -84,8 +84,8 @@ class TimerProvider with ChangeNotifier {
     _stopwatch.stop();
     _stopwatch.reset();
     _timer?.cancel();
-    player.stop();
-    player.setVolume(0);
+    await player.setVolume(0);
+    await player.stop();
     notifyListeners();
   }
 
