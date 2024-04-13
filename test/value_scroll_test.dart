@@ -7,7 +7,7 @@ void main() {
     // Arrange
     const length = 100;
     var value = 1;
-    final setValue = (val) => value = val;
+    setValue(val) => value = val;
     final valueScrollWidget =
         ValueScroll(length: length, value: value, setValue: setValue);
 
@@ -22,7 +22,7 @@ void main() {
     // Act
     final itemFinder = find.text((length - 1).toString());
     final scrollFinder = find.byWidget(valueScrollWidget);
-    await tester.dragUntilVisible(itemFinder, scrollFinder, Offset(0, -500));
+    await tester.dragUntilVisible(itemFinder, scrollFinder, const Offset(0, -500));
 
     // Assert
     // Verify that the item contains the correct text.

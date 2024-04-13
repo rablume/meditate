@@ -22,7 +22,7 @@ void main() {
 int STARTING_SECONDS = Constants.DEFAULT_TIMER_SECONDS;
 
 class TimerProvider with ChangeNotifier {
-  Duration _startingTime = Duration(
+  Duration _startingTime = const Duration(
       seconds: Constants.DEFAULT_TIMER_SECONDS,
       minutes: Constants.DEFAULT_TIMER_MINUTES,
       hours: Constants.DEFAULT_TIMER_HOURS);
@@ -54,7 +54,7 @@ class TimerProvider with ChangeNotifier {
       if (state == PlayerState.playing && !_hasStarted) {
         _hasStarted = true;
         player.pause();
-        player.seek(Duration(seconds: 0));
+        player.seek(const Duration(milliseconds: 0));
       }
     });
     // player.play(AssetSource('windchime1-7065.mp3'));
@@ -171,7 +171,7 @@ class MyApp extends StatelessWidget {
         darkTheme: ThemeData.dark(), // standard dark theme
         themeMode: ThemeMode.system, // device controls theme
         home: const MyHomePage(title: 'Meditate'),
-        scrollBehavior: MaterialScrollBehavior().copyWith(
+        scrollBehavior: const MaterialScrollBehavior().copyWith(
           dragDevices: {
             PointerDeviceKind.mouse,
             PointerDeviceKind.touch,
@@ -267,7 +267,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Container(
+                                    SizedBox(
                                         height: 200,
                                         width: 50,
                                         child: ValueScroll(
@@ -283,7 +283,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                         .remainder(60))),
                                             value: timerProvider
                                                 .startingTime.inHours)),
-                                    Container(
+                                    SizedBox(
                                         height: 200,
                                         width: 50,
                                         child: ValueScroll(
@@ -299,7 +299,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                             value: timerProvider
                                                 .startingTime.inMinutes
                                                 .remainder(60))),
-                                    Container(
+                                    SizedBox(
                                         height: 200,
                                         width: 50,
                                         child: ValueScroll(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CountdownPicker extends StatefulWidget {
+  const CountdownPicker({super.key});
+
   @override
   _CountdownPickerState createState() => _CountdownPickerState();
 }
@@ -13,14 +15,14 @@ class _CountdownPickerState extends State<CountdownPicker> {
     return Container(
       height: 200,
       color: Colors.white,
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          Text(
+          const Text(
             'Select Starting Countdown Timer',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           ListWheelScrollView(
             itemExtent: 40,
             diameterRatio: 2.0,
@@ -32,7 +34,7 @@ class _CountdownPickerState extends State<CountdownPicker> {
               (index) => Center(
                 child: Text(
                   '${index + 1} minutes',
-                  style: TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16),
                 ),
               ),
             ),
@@ -42,13 +44,13 @@ class _CountdownPickerState extends State<CountdownPicker> {
               });
             },
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
               // TODO: Use the selectedValue for the countdown timer
               Navigator.pop(context);
             },
-            child: Text('Start Countdown'),
+            child: const Text('Start Countdown'),
           ),
         ],
       ),
